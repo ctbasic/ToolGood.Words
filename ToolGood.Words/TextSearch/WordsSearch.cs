@@ -5,6 +5,12 @@ using System.Text;
 
 namespace ToolGood.Words
 {
+    public class ResultInfo
+    {
+        public string Item1 { get; set; }
+        public int Item2 { get; set; }
+    }
+
     /// <summary>
     /// 文本搜索，带返回位置及索引号
     /// </summary>
@@ -14,7 +20,7 @@ namespace ToolGood.Words
         class TrieNode
         {
             public bool End { get; set; }
-            public List<Tuple<string, int>> Results { get; set; }
+            public List<ResultInfo> Results { get; set; }
             internal Dictionary<char, TrieNode> m_values;
             private uint minflag = uint.MaxValue;
             private uint maxflag = uint.MinValue;
@@ -22,7 +28,7 @@ namespace ToolGood.Words
             public TrieNode()
             {
                 m_values = new Dictionary<char, TrieNode>();
-                Results = new List<Tuple<string, int>>();
+                Results = new List<ResultInfo>();
             }
 
             public bool TryGetValue(char c, out TrieNode node)
@@ -52,7 +58,8 @@ namespace ToolGood.Words
                 if (End == false) {
                     End = true;
                 }
-                Results.Add(Tuple.Create(text, index));
+
+                Results.Add(new ResultInfo() { Item1 = text, Item2 = index });
             }
 
             public void Merge(TrieNode node)
